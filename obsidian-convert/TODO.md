@@ -20,6 +20,7 @@ Nothing here is guaranteed or even likely. Just a record of ideas. Will implemen
 - [ ] optionally pipe through chatgpt for proofing
     - is this a good idea? Who knows, but it's trendy
 - [ ] preserve valid internal links
+- [ ] parse out `!` leftover from removing internal links
 
-### Should I be doing this all in typescript? 
-Probably. Can do later. Python easy. At least it's not all in bash.
+### Shouldn't this be in TS/JS? 
+Probably. Can do later. 

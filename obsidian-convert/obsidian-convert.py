@@ -26,7 +26,8 @@ def cleanup_tags(contents):
 
 def cleanup_frontmatter(contents):
     """Cleans up YAML frontmatter"""
-    pattern = r"^---.*?---\n$"
+    pattern = r"^---.*?(---[\r\n]?)$"
+    print(re.search(pattern, contents, flags=re.DOTALL | re.MULTILINE))
     return re.sub(pattern, "", contents, flags=re.DOTALL | re.MULTILINE)
 
 
@@ -53,9 +54,9 @@ def amend_file(filename):
         contents = f.read()
 
     # note: sequencing here is important
+    contents = cleanup_frontmatter(contents)
     contents = downgrade_headers(contents)
     contents = fix_headers(contents)
-    contents = cleanup_frontmatter(contents)
 
     contents = insert_header(contents, filename)
     contents = cleanup_tags(contents)
