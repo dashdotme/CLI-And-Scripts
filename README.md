@@ -30,14 +30,10 @@ Prompts can be arbitrary length strings or files. Use files for anything the bas
 - generate api key @ https://platform.openai.com/account/api-keys
 
 ```bash
-pip install openai
+pip install openai # or update if you're on version <0.27.x
 echo "OPENAI_API_KEY=TOKENGOESHERE" | sudo tee -a /etc/environment
 source /etc/environment
 ```
-
-## Suggested alternatives
-
-- [ChatGPTWrapper](https://github.com/mmabrouk/chatgpt-wrapper) - ChatGPT itself in your shell. Slower, smarter and maintains context. Free (for now)
 
 # Suggested use
 
