@@ -20,7 +20,7 @@ parser.add_argument(
     type=str,
     default="create",
     help="""Definitions:
-    - Chat (default): interactive, ongoing mode
+    - Chat (default): interactive, ongoing mode. '|?' to submit your current query (can be multiline)
     - Completion: generates a completion based on the prompt
     - Code: completion for code prompts. Loops up to 5 times by default
     - Edit: adjusts a prompt based on the instruction 
@@ -172,28 +172,48 @@ def completionmode():
         stop=['"""'],
         echo=True,
     )
-
     print(response.choices[0].text)
     exit()
 
-# see www.haihai.ai/chatgpt-api for walkthrough & further inspiration
+def read_message():
+    next_msg = []
+    looping = True
+    while looping:
+        next_line = input()
+        if '|?' in next_line:
+            next_line.replace('|?', '')
+            looping = False
+        next_msg.append(next_line)
 
+
+# see www.haihai.ai/chatgpt-api for walkthrough & further inspiration
+# 
 def chatmode():
     messages = []
     system_msg = input("What sort of bot do you need?\n")
     messages.append({"role": "system", "content": system_msg})
 
-    print("Hi! What do you need")
+    print("")
     while input != "exit()":
-        message = input()
+        next_msg = []
+        print("Me:")
+        while True:
+            next_line = input()
+            if '|?' in next_line:
+                next_msg.append(next_line.replace('|?', ''))
+                break
+            next_msg.append(next_line)
+
+        message = "\n".join(next_msg)
         messages.append({"role": "user", "content": message})
+        print("\nChatGPT is thinking...")
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages
         )
         reply = response["choices"][0]["message"]["content"]
         messages.append({"role": "assistant", "content": reply})
-        print("\n" + reply + "\n")
+        print("\nChatGPT:" + reply + "\n")
     exit()
 
 if __name__ == "__main__":
