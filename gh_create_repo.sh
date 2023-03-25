@@ -35,61 +35,61 @@ function push() {
 
 function createGH() {
     echo $REPO_DESCRIPTION
-    gh repo create $REPO_NAME -d="$REPO_DESCRIPTION" $VISIBILITY_FLAG $PUSH_FLAG -y
+    gh repo create "$REPO_NAME" -d="$REPO_DESCRIPTION" $VISIBILITY_FLAG $PUSH_FLAG -y
 
-    if [ -n "PUSH_FLAG" ]; then
+    if [ -n "$PUSH_FLAG" ]; then
         push
     fi
 }
 
-if [ $# -eq 0 ]; then
-    usage
-    exit 1
-fi
-
-REPO_NAME=""
-REPO_DESCRIPTION=""
-VISIBILITY_FLAG="--private"
-PUSH_FLAG=""
-
-if [[ $# -eq 1 && "$1" != -* ]]; then
-    REPO_NAME=$1
-    createGH
-    exit 1
-fi
-
-REPO_NAME=
-
-while [ "$1" != "" ]; do
-    case $1 in
-    -n | --name)
-        shift
-        REPO_NAME=$1
-        ;;
-    -s | --show)
-        VISIBILITY_FLAG="--public"
-        ;;
-    -i | --init)
-        init
-        ;;
-    -p | --push)
-        PUSH_FLAG="-s=. -r=origin"
-        ;;
-    -d | --descript)
-        shift
-        REPO_DESCRIPTION="$@"
-        ;;
-    -h | --help)
+function main() {
+    if [ $# -eq 0 ]; then
         usage
         exit 1
-        ;;
-    esac
-    shift
-done
+    fi
 
-if [ -z "$REPO_NAME" ]; then
-    usage
-    exit 1
-fi
+    REPO_NAME=""
+    REPO_DESCRIPTION=""
+    VISIBILITY_FLAG="--private"
+    PUSH_FLAG=""
 
-createGH
+    while [ "$#" -gt 0 ]; do
+        case $1 in
+        -n | --name)
+            shift
+            REPO_NAME=$1
+            ;;
+        -s | --show)
+            VISIBILITY_FLAG="--public"
+            ;;
+        -i | --init)
+            init
+            ;;
+        -p | --push)
+            PUSH_FLAG="-s=. -r=origin"
+            ;;
+        -d | --descript)
+            shift
+            REPO_DESCRIPTION="$1"
+            ;;
+        -h | --help)
+            usage
+            exit 1
+            ;;
+        *)
+            usage
+            exit 1
+            ;;
+        esac
+        shift
+    done
+
+    if [ -z "$REPO_NAME" ]; then
+        usage
+        exit 1
+    fi
+
+    createGH
+}
+
+main "$@"
