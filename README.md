@@ -40,7 +40,7 @@ source /etc/environment
 Read (!), customize to your liking, then put any scripts you might use somewhere on your path with a short alias. I.e
 
 ```bash
-chmod +x gh_create_repo.sh
-cp gh_create_repo.sh ~/bin/gcreate
+chmod +x gh_create_repo.py
+cp gh_create_repo.py ~/bin/ghcreate
 # gcreate -n repo -i -p -s -d "My repo description"
 ```
